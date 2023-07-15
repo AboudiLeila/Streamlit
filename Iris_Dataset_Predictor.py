@@ -56,7 +56,7 @@ def separation(titre1=None, titre2=None, color='cyan'):
 separation('Iris Dataset Analysis') #This is a markdown used as a title
 # st.title("Iris Dataset Analysis") #This is the title in a standard way
 
-st.header("_:blue[Exploring the Iris Dataset 💐 🌺]_")
+st.header('_:blue[Exploring the Iris Dataset 💐 🌺]_')
 
 sepal_length = st.slider("Sepal Length",
                          float(df['sepal length'].min()),
@@ -79,7 +79,7 @@ if st.button("Predict"):
     input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
     y_pred = clf.predict(x_test)  # Predict for all samples in the test set
     predicted_class_name = iris.target_names[y_pred[0]]
-    st.write("Predicted Iris Flower Type:", predicted_class_name)
+    st.write(f'Predicted Iris Flower Type: _:red[{predicted_class_name}]_')
     cm = confusion_matrix(y_test, y_pred)
     separation(titre2='Metrics', color='red')
     cm_matrix = pd.DataFrame(
