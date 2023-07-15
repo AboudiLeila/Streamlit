@@ -32,7 +32,7 @@ x_train, x_test, y_train, y_test = train_test_split(X,
                                                     test_size=0.2,
                                                     random_state=20
                                                     )
-clf = RandomForestClassifier(n_estimators=5)
+clf = RandomForestClassifier(n_estimators=10)
 model = clf.fit(x_train, y_train)
 
 st.button('Actualiser', key='refresh')
@@ -75,9 +75,9 @@ petal_width = st.slider("Petal Width",
                         float(df['petal width'].mean()))
 
 if st.button("Predict"):
-    input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
-    y_pred = clf.predict(input_data)
+    y_pred = clf.predict(x_test)
     predicted_class_name = iris.target_names[y_pred[0]]
+
     # st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
 
     separation()
@@ -101,12 +101,12 @@ if st.button("Predict"):
         cm_matrix,
         labels=dict(x="Actual", y="Predicted", color="Count"),
         color_continuous_scale='greys',
-        zmin=0,
-        title='Confusion Matrix:'
+        zmin=0.7,
+        title='Confusion Matrix'
     )
     fig.update_layout(
         coloraxis_colorbar=dict(
-            x=0.7,  # Adjust this value to increase or decrease the distance
+            x=0.8,  # Adjust this value to increase or decrease the distance
         )
     )
 
