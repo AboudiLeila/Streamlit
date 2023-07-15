@@ -93,4 +93,7 @@ if st.button("Predict"):
         zmin=0,
         title='Confusion Matrix'
     )
+    st.markdown('<div style="display: flex; justify-content: center;">', unsafe_allow_html=True)
     st.plotly_chart(fig)
+    st.markdown('</div>', unsafe_allow_html=True)
+
