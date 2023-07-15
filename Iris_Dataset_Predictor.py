@@ -55,8 +55,7 @@ def separation(titre1=None, titre2=None, color='cyan'):
 
 separation('Iris Dataset Analysis') #This is a markdown used as a title
 # st.title("Iris Dataset Analysis") #This is the title in a standard way
-
-st.header('_:blue[Exploring the Iris Dataset 💐 🌺]_')
+st.header("_:blue[Exploring the Iris Dataset 💐 🌺]_")
 
 sepal_length = st.slider("Sepal Length",
                          float(df['sepal length'].min()),
@@ -79,14 +78,21 @@ if st.button("Predict"):
     input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
     y_pred = clf.predict(x_test)  # Predict for all samples in the test set
     predicted_class_name = iris.target_names[y_pred[0]]
-    st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
+    # st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
 
     separation()
-    st.markdown(f"Predicted Iris Flower Type:<h1 style='font-family: Lucida Console;text-align: center; color: cyan;'>test</h1>",
-                    unsafe_allow_html=True)
-    
-    separation(titre2='Metrics', color='red')
+    st.markdown(
+        f"Predicted Iris Flower Type:<p style = 'font-family:Lucida Console;"
+        f"text-align:center;"
+        f"margin-top: -20px;"
+        f"margin-left: -40%;"
+        f"font-size:30px;"
+        f"color:cyan;'"
+        f">{predicted_class_name}</p>",
+        unsafe_allow_html=True)
+
     cm = confusion_matrix(y_test, y_pred)
+    separation(titre2='Metrics', color='violet')
     cm_matrix = pd.DataFrame(
         data=cm,
         columns=[f'Actual:{c}' for c in iris.target_names],
@@ -99,7 +105,12 @@ if st.button("Predict"):
         zmin=0,
         title='Confusion Matrix'
     )
-    
+    fig.update_layout(
+        coloraxis_colorbar=dict(
+            x=0.8,  # Adjust this value to increase or decrease the distance
+        )
+    )
+
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
         st.plotly_chart(fig)
