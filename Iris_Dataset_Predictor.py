@@ -89,7 +89,7 @@ if st.button("Predict"):
     fig = px.imshow(
         cm_matrix,
         labels=dict(x="Actual", y="Predicted", color="Count"),
-        color_continuous_scale='greys',
+        color_continuous_scale='inferno',
         zmin=0,
         title='Confusion Matrix'
     )
