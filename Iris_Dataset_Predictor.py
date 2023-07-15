@@ -79,7 +79,7 @@ if st.button("Predict"):
     input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
     y_pred = clf.predict(x_test)  # Predict for all samples in the test set
     predicted_class_name = iris.target_names[y_pred[0]]
-    st.write(f'Predicted Iris Flower Type: _:red[{predicted_class_name}]_')
+    st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
     cm = confusion_matrix(y_test, y_pred)
     separation(titre2='Metrics', color='red')
     cm_matrix = pd.DataFrame(
