@@ -80,8 +80,13 @@ if st.button("Predict"):
     y_pred = clf.predict(x_test)  # Predict for all samples in the test set
     predicted_class_name = iris.target_names[y_pred[0]]
     st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
-    cm = confusion_matrix(y_test, y_pred)
+
+    separation()
+    st.markdown(f"Predicted Iris Flower Type:<h1 style='font-family: Lucida Console;text-align: center; color: {color};'>{titre1}</h1>",
+                    unsafe_allow_html=True)
+    
     separation(titre2='Metrics', color='red')
+    cm = confusion_matrix(y_test, y_pred)
     cm_matrix = pd.DataFrame(
         data=cm,
         columns=[f'Actual:{c}' for c in iris.target_names],
