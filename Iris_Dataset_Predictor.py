@@ -55,6 +55,7 @@ def separation(titre1=None, titre2=None, color='cyan'):
 
 separation('Iris Dataset Analysis') #This is a markdown used as a title
 # st.title("Iris Dataset Analysis") #This is the title in a standard way
+
 st.header("_:blue[Exploring the Iris Dataset 💐 🌺]_")
 
 sepal_length = st.slider("Sepal Length",
@@ -80,7 +81,7 @@ if st.button("Predict"):
     predicted_class_name = iris.target_names[y_pred[0]]
     st.write("Predicted Iris Flower Type:", predicted_class_name)
     cm = confusion_matrix(y_test, y_pred)
-    separation(titre2='Confusion Matrix', color='red')
+    separation(titre2='Metrics', color='red')
     cm_matrix = pd.DataFrame(
         data=cm,
         columns=[f'Actual:{c}' for c in iris.target_names],
@@ -93,7 +94,8 @@ if st.button("Predict"):
         zmin=0,
         title='Confusion Matrix'
     )
-    st.markdown('<div style="display: flex; justify-content: center;">', unsafe_allow_html=True)
-    st.plotly_chart(fig)
-    st.markdown('</div>', unsafe_allow_html=True)
-
+    container = st.beta_container()
+    with container:
+        col1, col2, col3 = st.beta_columns([1, 4, 1])
+        with col2:
+            st.plotly_chart(fig)
