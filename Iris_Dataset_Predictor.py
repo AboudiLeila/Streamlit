@@ -82,7 +82,7 @@ if st.button("Predict"):
     st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
 
     separation()
-    st.markdown(f"Predicted Iris Flower Type:<h1 style='font-family: Lucida Console;text-align: center; color: {color};'>{titre1}</h1>",
+    st.markdown(f"Predicted Iris Flower Type:<h1 style='font-family: Lucida Console;text-align: center; color: cyan;'>test</h1>",
                     unsafe_allow_html=True)
     
     separation(titre2='Metrics', color='red')
