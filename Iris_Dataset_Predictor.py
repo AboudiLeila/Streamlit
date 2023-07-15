@@ -94,8 +94,7 @@ if st.button("Predict"):
         zmin=0,
         title='Confusion Matrix'
     )
-    container = st.beta_container()
-    with container:
-        col1, col2, col3 = st.beta_columns([1, 4, 1])
-        with col2:
-            st.plotly_chart(fig)
+    
+    col1, col2, col3 = st.columns([1, 4, 1])
+    with col2:
+        st.plotly_chart(fig)
