@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import confusion_matrix
 import plotly.express as px
+import statistics
 
 icon_img = Image.open('Iris.jpg')
 st.set_page_config(
@@ -32,7 +33,7 @@ x_train, x_test, y_train, y_test = train_test_split(X,
                                                     test_size=0.2,
                                                     random_state=20
                                                     )
-clf = RandomForestClassifier(n_estimators=10)
+clf = RandomForestClassifier(n_estimators=4, criterion='gini')
 model = clf.fit(x_train, y_train)
 
 st.button('Actualiser', key='refresh')
@@ -75,10 +76,9 @@ petal_width = st.slider("Petal Width",
                         float(df['petal width'].mean()))
 
 if st.button("Predict"):
-    y_pred = clf.predict(x_test)
+    input_data = [[sepal_length, sepal_width, petal_length, petal_width]]
+    y_pred = clf.predict(input_data)
     predicted_class_name = iris.target_names[y_pred[0]]
-
-    # st.write(f'Predicted Iris Flower Type: **_:red[{predicted_class_name}]_**')
 
     separation()
     st.markdown(
@@ -90,7 +90,7 @@ if st.button("Predict"):
         f"color:cyan;'>{predicted_class_name}</p>",
         unsafe_allow_html=True)
 
-    cm = confusion_matrix(y_test, y_pred)
+    cm = confusion_matrix(y_test, clf.predict(x_test))  # Fix the order of arguments
     separation(titre2='Metrics', color='violet')
     cm_matrix = pd.DataFrame(
         data=cm,
