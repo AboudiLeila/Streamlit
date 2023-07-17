@@ -36,7 +36,13 @@ x_train, x_test, y_train, y_test = train_test_split(X,
 clf = RandomForestClassifier(n_estimators=4, criterion='gini')
 model = clf.fit(x_train, y_train)
 
-st.button('Actualiser', key='refresh')
+
+def refresh_page():
+    st.experimental_rerun()
+
+
+if st.button('Actualiser', key='refresh'):
+    refresh_page()
 
 
 def separation(titre1=None, titre2=None, color='cyan'):
@@ -85,7 +91,7 @@ if st.button("Predict"):
         f"Predicted Iris Flower Type:<p style='font-family:Lucida Console;"
         f"text-align:center;"
         f"margin-top: -20px;"
-        f"margin-left: -40%;"
+        f"margin-left: 0%;"
         f"font-size:30px;"
         f"color:cyan;'>{predicted_class_name}</p>",
         unsafe_allow_html=True)
