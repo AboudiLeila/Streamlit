@@ -117,18 +117,24 @@ separation(titre1='Descriptions',color1='#2464c9', lvl1='h4', text_align1='left'
 st.write("<div class='center'>" + df.describe().to_html() + "</div>", unsafe_allow_html=True)
 
 
-def setFigCenter(seuil1=1, seuil2=4, seuil3=1, cont1=None, figure=None, cont3=None):
+def setFigCenter(seuil1=1, seuil2=4, seuil3=1, cont1=None, figure=None, cont3=None, isPic = True):
     col1, col2, col3 = st.columns([seuil1, seuil2, seuil3])
-    with col1:
-        st.write(cont1)
-    with col2:
-        # Save the figure to a BytesIO buffer
-        buffer = io.BytesIO()
-        figure.savefig(buffer, format="png")
-        buffer.seek(0)
-        st.image(buffer, use_container_width=True)  # Display the image
-    with col3:
-        st.write(cont3)
+    if cont1:
+        with col1:
+            st.write(cont1)
+    if figure and isPic:
+        with col2:
+            # Save the figure to a BytesIO buffer
+            buffer = io.BytesIO()
+            figure.savefig(buffer, format="png")
+            buffer.seek(0)
+            st.image(buffer, use_container_width=True)
+    if figure and isPic =False:
+        with col2:
+            st.write(figure)
+    if cont3:
+        with col3:
+            st.write(cont3)
 
 # Histograms with KDE
 
@@ -242,7 +248,7 @@ def main():
     # Prediction
 
     separation(titre2='Predictions', color1='#2464c9', sep1=True, sep2=True)
-    setFigCenter(seuil1=1,seuil2=1,seuil3=1,cont1=data_state, figure=data_cases, cont3 =data_vaccin)
+    setFigCenter(seuil1=1,seuil2=1,seuil3=1,cont1=data_state, figure=data_cases, cont3 =data_vaccin, isPic=False)
     features = st.text_area("Enter the features for prediction (comma-separated values)", "State, Total_Cases, Vaccinations_Completed")
     features_list = features.split(',')
 
