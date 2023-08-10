@@ -117,14 +117,14 @@ separation(titre1='Descriptions',color1='#2464c9', lvl1='h4', text_align1='left'
 st.write("<div class='center'>" + df.describe().to_html() + "</div>", unsafe_allow_html=True)
 
 
-def setFigCenter(seuil1=1,seuil2=4,seuil3=1,cont1=None, figure=None, cont3 =None):
+def setFigCenter(seuil1=1, seuil2=4, seuil3=1, cont1=None, figure=None, cont3=None):
     col1, col2, col3 = st.columns([seuil1, seuil2, seuil3])
     with col1:
-        cont1
+        st.write(cont1) 
     with col2:
-        figure
+        st.pyplot(figure) 
     with col3:
-        cont3
+        st.write(cont3) 
 
 # Histograms with KDE
 
