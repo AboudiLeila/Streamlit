@@ -122,7 +122,11 @@ def setFigCenter(seuil1=1, seuil2=4, seuil3=1, cont1=None, figure=None, cont3=No
     with col1:
         st.write(cont1)
     with col2:
-        st.pyplot(figure)
+        # Save the figure to a BytesIO buffer
+        buffer = io.BytesIO()
+        figure.savefig(buffer, format="png")
+        buffer.seek(0)
+        st.image(buffer, use_container_width=True)  # Display the image
     with col3:
         st.write(cont3)
 
