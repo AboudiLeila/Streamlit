@@ -135,10 +135,11 @@ def plot_histograms_kde(df):
         plt.ylabel('Frequency')
     plt.tight_layout()
     return plt.gcf()
+
 separation(titre1='Histograms with KDE of Numerical Columns', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
 fig_hist_kde = plot_histograms_kde(df)
-fig=st.pyplot(fig_hist_kde)
-setFigCenter(figure=fig, seuil1=1, seuil2=2, seuil3=1)
+st.pyplot(fig_hist_kde)
+setFigCenter(figure=fig_hist_kde, seuil1=1, seuil2=2, seuil3=1)
 
 # Pairwise Scatter Plots
 
@@ -149,11 +150,10 @@ def plot_pairwise_scatter(df):
     sns.pairplot(df.iloc[:], diag_kind='kde', markers='o')
     plt.tight_layout()
     return plt.gcf()
+
 separation(titre1='Pairwise Scatter Plots of Numerical Columns', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
 fig_pairwise_scatter = plot_pairwise_scatter(df)
-# setFigCenter(fig_pairwise_scatter)
-fig = st.pyplot(fig_pairwise_scatter)
-setFigCenter(figure=fig, seuil2=2)
+st.pyplot(fig_pairwise_scatter)
 
 # Plot correlation map
 
