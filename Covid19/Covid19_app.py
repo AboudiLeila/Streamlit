@@ -176,10 +176,12 @@ def plot_correlation_map(df):
     )
     plt.xticks(rotation=20)
     plt.yticks(rotation=20)
-    st.pyplot()
+    return fig  # Return the figure instead of using st.pyplot()
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 separation(titre1='Correlation Map', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
-plot_correlation_map(df)
+fig_correlation_map = plot_correlation_map(df)
+st.pyplot(fig_correlation_map)
 
 
 st.markdown(f"<p style='"
