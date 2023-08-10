@@ -66,12 +66,9 @@ label_encoder = LabelEncoder()
 df[['state_encoded', 'cases_encoded', 'vaccinationsCompleted_encoded', 'deaths_encoded']] = df[['state', 'actuals.cases', 'actuals.vaccinationsCompleted', 'actuals.deaths']].apply(label_encoder.fit_transform)
 df.drop(columns=['actuals.deaths'], inplace=True)
 
-data_state=df[['state','state_encoded']]
-data_cases=df[['actuals.cases','cases_encoded']]
-data_vaccin=df[['actuals.vaccinationsCompleted','vaccinationsCompleted_encoded']]
-data_state.drop_duplicates(inplace=True, ignore_index=True)
-data_cases.drop_duplicates(inplace=True, ignore_index=True)
-data_vaccin.drop_duplicates(inplace=True, ignore_index=True)
+data_state = df[['state', 'state_encoded']].drop_duplicates().reset_index(drop=True)
+data_cases = df[['actuals.cases', 'cases_encoded']].drop_duplicates().reset_index(drop=True)
+data_vaccin = df[['actuals.vaccinationsCompleted', 'vaccinationsCompleted_encoded']].drop_duplicates().reset_index(drop=True)
 
 numerical_cols = [
     'state_encoded',
@@ -171,8 +168,9 @@ def plot_correlation_map(df):
         annot_kws={'fontsize': 11}
     )
     plt.xticks(rotation=20)
-    plt.yticks(rotation=20)
-    st.pyplot(fig)
+    plt.yticks(rotation=80)
+    return fig
+
 st.set_option('deprecation.showPyplotGlobalUse', False)
 separation(titre1='Correlation Map', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
 setFigCenter(figure=plot_correlation_map(df), seuil1=1, seuil2=2, seuil3=1)
@@ -239,25 +237,21 @@ def main():
     with col3:
         st.write("Vaccination Data:")
         st.write(data_vaccin)
-    features = st.text_area("Enter the features for prediction (comma-separated values)", "State, Total_Cases, Vaccinations_Completed")
-    features_list = features.split(',')
 
-    # Check if the first element is 'State' and remove it from the list if it is
-    if features_list[0].strip().lower() == 'state':
-        features_list = features_list[1:]
+features = st.text_area("Enter the features for prediction (comma-separated values)", "Total_Cases, Vaccinations_Completed, State")
+features_list = features.split(',')
 
-    numerical_values = []
-    for x in features_list:
-        try:
-            numerical_values.append(float(x.strip()))
-        except ValueError:
-            # If the value cannot be converted to float, ignore it
-            pass
+numerical_values = []
+for x in features_list:
+    try:
+        numerical_values.append(float(x.strip()))
+    except ValueError:
+        # If the value cannot be converted to float, ignore it
+        pass
 
-    if len(numerical_values) != 3:
-        st.write("Please enter three numerical values (excluding 'State').")
-        return
-
+if len(numerical_values) != 3:
+    st.write("Please enter three numerical values.")
+else:
     input_features = np.array(numerical_values).reshape(1, -1)
 
     prediction = best_xgb_model.predict(input_features)
