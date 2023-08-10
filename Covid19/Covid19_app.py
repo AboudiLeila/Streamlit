@@ -117,7 +117,7 @@ separation(titre1='Descriptions',color1='#2464c9', lvl1='h4', text_align1='left'
 st.write("<div class='center'>" + df.describe().to_html() + "</div>", unsafe_allow_html=True)
 
 
-def setFigCenter(seuil1=1,seuil2=4,seuil3=1,figure=None):
+def setFigCenter(seuil1=1,seuil2=4,seuil3=1,cont1=None, figure=None, cont3 =None):
     col1, col2, col3 = st.columns([seuil1, seuil2, seuil3])
     with col1:
         cont1
@@ -235,6 +235,7 @@ def main():
     # Prediction
 
     separation(titre2='Predictions', color1='#2464c9', sep1=True, sep2=True)
+    setFigCenter(seuil1=1,seuil2=1,seuil3=1,cont1=data_state, figure=data_cases, cont3 =data_vaccin)
     features = st.text_area("Enter the features for prediction (comma-separated values)", "State, Total_Cases, Vaccinations_Completed")
     features_list = features.split(',')
 
