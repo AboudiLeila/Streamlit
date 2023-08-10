@@ -69,9 +69,9 @@ df.drop(columns=['actuals.deaths'], inplace=True)
 data_state=df[['state','state_encoded']]
 data_cases=df[['actuals.cases','cases_encoded']]
 data_vaccin=df[['actuals.vaccinationsCompleted','vaccinationsCompleted_encoded']]
-data_state.drop_duplicates(inplace=True, ignore_index=True)
-data_cases.drop_duplicates(inplace=True, ignore_index=True)
-data_vaccin.drop_duplicates(inplace=True, ignore_index=True)
+data_state = data_state.drop_duplicates().reset_index(drop=True)
+data_cases = data_cases.drop_duplicates().reset_index(drop=True)
+data_vaccin = data_vaccin.drop_duplicates().reset_index(drop=True)
 
 numerical_cols = [
     'state_encoded',
@@ -117,14 +117,14 @@ separation(titre1='Descriptions',color1='#2464c9', lvl1='h4', text_align1='left'
 st.write("<div class='center'>" + df.describe().to_html() + "</div>", unsafe_allow_html=True)
 
 
-def setFigCenter(seuil1=1, seuil2=4, seuil3=1, cont1=None, figure=None, cont3=None):
+def setFigCenter(seuil1=1,seuil2=4,seuil3=1,cont1=None, figure=None, cont3=None):
     col1, col2, col3 = st.columns([seuil1, seuil2, seuil3])
     with col1:
-        st.write(cont1) 
+        st.write(cont1)
     with col2:
-        st.pyplot(figure) 
+        st.pyplot(figure.fig)  # Use figure.fig to extract the Matplotlib figure object
     with col3:
-        st.write(cont3) 
+        st.write(cont3)
 
 # Histograms with KDE
 
