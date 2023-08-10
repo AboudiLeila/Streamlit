@@ -138,7 +138,6 @@ def plot_histograms_kde(df):
 
 separation(titre1='Histograms with KDE of Numerical Columns', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
 fig_hist_kde = plot_histograms_kde(df)
-st.pyplot(fig_hist_kde)
 setFigCenter(figure=fig_hist_kde, seuil1=1, seuil2=2, seuil3=1)
 
 # Pairwise Scatter Plots
@@ -153,7 +152,7 @@ def plot_pairwise_scatter(df):
 
 separation(titre1='Pairwise Scatter Plots of Numerical Columns', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
 fig_pairwise_scatter = plot_pairwise_scatter(df)
-st.pyplot(fig_pairwise_scatter)
+setFigCenter(figure=fig_pairwise_scatter, seuil1=1, seuil2=2, seuil3=1)
 
 # Plot correlation map
 
@@ -176,7 +175,7 @@ def plot_correlation_map(df):
     st.pyplot(fig)
 st.set_option('deprecation.showPyplotGlobalUse', False)
 separation(titre1='Correlation Map', color1='#2464c9', lvl1='h4', text_align1='left', sep1=True)
-plot_correlation_map(df)
+setFigCenter(figure=plot_correlation_map(df), seuil1=1, seuil2=2, seuil3=1)
 
 
 st.markdown(f"<p style='"
