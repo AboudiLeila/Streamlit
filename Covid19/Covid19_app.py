@@ -119,8 +119,12 @@ st.write("<div class='center'>" + df.describe().to_html() + "</div>", unsafe_all
 
 def setFigCenter(seuil1=1,seuil2=4,seuil3=1,figure=None):
     col1, col2, col3 = st.columns([seuil1, seuil2, seuil3])
+    with col1:
+        cont1
     with col2:
-        return figure
+        figure
+    with col3:
+        cont3
 
 # Histograms with KDE
 
