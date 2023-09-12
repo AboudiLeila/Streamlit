@@ -1,64 +1,69 @@
 import streamlit as st
-from google.cloud import speech_v1p1beta1 as speech
+import speech_recognition as sr
 import keyboard
-import io
-import os
 
-# Set your Google Cloud credentials environment variable
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "your-credentials.json"
+recognizer = sr.Recognizer()
 
-# Create a client for the Google Cloud Speech-to-Text API
-client = speech.SpeechClient()
-
-# Function to transcribe speech
-def transcribe_speech(audio_data, language_code):
-    audio = speech.RecognitionAudio(content=audio_data)
-
-    config = speech.RecognitionConfig(
-        encoding=speech.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=16000,
-        language_code=language_code,
-    )
-
-    response = client.recognize(config=config, audio=audio)
-
-    for result in response.results:
-        return result.alternatives[0].transcript
-
-# Streamlit UI
-st.title("Real-time Speech Recognition with Google Cloud Speech-to-Text")
-
-# Language selection
-language_code = st.selectbox("Select Language", ["en-US", "fr-FR"])
-
-# Open the microphone to capture audio
-with st.spinner("Initializing microphone..."):
-    st.success("Microphone is ready. Press the 's' key to start/stop recording.")
-
-    recording = False
-    audio_data = io.BytesIO()
-
-    while True:
+def transcribe_speech(audio_data, language):
+    with sr.AudioFile(audio_data) as source:
+        recognizer.adjust_for_ambient_noise(source)
+        recognizer.energy_threshold = 300
+        recognizer.dynamic_energy_threshold = True
         try:
-            e = keyboard.read_event()
-            if e.event_type == keyboard.KEY_DOWN:
-                if e.name == 's':
-                    if not recording:
-                        st.info("Recording started...")
-                        recording = True
-                    else:
-                        st.info("Recording stopped...")
-                        recording = False
-                        keyboard.unhook_all()
-                        break
-            elif e.event_type == keyboard.KEY_UP and recording:
-                audio_data.write(e.scan_code.to_bytes(1, byteorder='big'))
+            text = recognizer.recognize_sphinx(source, language=language)
+            return text
+        except sr.UnknownValueError:
+            return "Désolé, je n'ai pas compris ce que vous avez dit."
+        except sr.RequestError as e:
+            return f"Impossible de récupérer les résultats ; {str(e)}"
+        except Exception as e:
+            return f"Une erreur s'est produite : {str(e)}"
 
-        except Exception as ex:
-            st.error(f"Error: {str(ex)}")
+st.title("Reconnaissance vocale en temps réel")
 
-# Perform the transcription
-if audio_data.getvalue():
-    st.subheader("Transcription:")
-    text = transcribe_speech(audio_data.getvalue(), language_code)
-    st.write("You said: " + text)
+language = st.selectbox("Sélectionnez la langue", ["en-US", "fr-FR"])
+
+with st.spinner("Initialisation du microphone..."):
+    with sr.Microphone() as source:
+        st.success("Le microphone est prêt. Appuyez sur la touche 's' pour démarrer/arrêter l'enregistrement.")
+
+        recording = False
+        audio_data = None
+
+        while True:
+            try:
+                e = keyboard.read_event()
+                if e.event_type == keyboard.KEY_DOWN:
+                    if e.name == 's':
+                        if not recording:
+                            st.info("Enregistrement démarré...")
+                            recording = True
+                            audio_data = recognizer.listen(source, timeout=None)
+                        else:
+                            st.info("Enregistrement arrêté...")
+                            recording = False
+                            keyboard.unhook_all()
+                            break
+            except Exception as ex:
+                st.error(f"Erreur : {str(ex)}")
+
+if audio_data is not None:
+    st.subheader("Transcription :")
+    text = transcribe_speech(audio_data, language)
+    st.write("Vous avez dit : " + text)
+
+if st.button("Enregistrer dans un fichier"):
+    if audio_data is not None:
+        save_to_file(text, "transcription.txt")
+        st.success("Transcription enregistrée dans 'transcription.txt'.")
+
+def save_to_file(text, filename):
+    with open(filename, 'w', encoding='utf-8') as file:
+        file.write(text)
+
+# Add buttons for pause and resume
+if st.button("Pause"):
+    st.write("Enregistrement en pause.")
+
+if st.button("Reprendre"):
+    st.write("Enregistrement repris.")
