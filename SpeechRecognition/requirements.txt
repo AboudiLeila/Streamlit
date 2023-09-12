@@ -1,5 +1,4 @@
-pip~=23.2.1
-streamlit~=1.26.0
-ipywidgets~=8.1.0
-keyboard~=0.13.5
-speech_recognition~=3.10.0
+pip==23.2.1
+google-cloud-speech==2.6.0
+streamlit==1.26.0
+keyboard==0.13.5
