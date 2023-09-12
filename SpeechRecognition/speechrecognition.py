@@ -1,21 +1,31 @@
+!pip install --upgrade pip
+
+
 import streamlit as st
 import speech_recognition as sr
 import keyboard
 
+# Initialize the recognizer
 recognizer = sr.Recognizer()
 
+
+# Function to stop recording when a specific key is pressed
 def stop_recording(e):
     if e.name == 's':
         st.write("Recording stopped by key press.")
         keyboard.unhook_all()
         return
 
+
+# Streamlit UI
 st.title("Real-time Speech Recognition")
 
+# Open the microphone to capture audio
 with st.spinner("Initializing microphone..."):
     with sr.Microphone() as source:
         st.success("Microphone is ready. Press the 's' key to start/stop recording.")
 
+        # Adjust the energy threshold if needed (this value worked for me, but you may need to fine-tune it)
         recognizer.adjust_for_ambient_noise(source)
 
         recording = False
@@ -38,10 +48,11 @@ with st.spinner("Initializing microphone..."):
             except Exception as ex:
                 st.error(f"Error: {str(ex)}")
 
+# Perform the transcription
 if audio_data is not None:
     st.subheader("Transcription:")
     try:
-        text = recognizer.recognize_google(audio_data)  
+        text = recognizer.recognize_google(audio_data)  # You can choose a different recognizer if needed
         st.write("You said: " + text)
 
     except sr.UnknownValueError:
