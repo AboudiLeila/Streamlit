@@ -18,7 +18,7 @@ st.set_page_config(
 )
 
 
-filepath = 'bank_uib.json'
+filepath = 'Credit_Eligibility/bank_uib.json'
 with open(filepath, 'r') as file:
     json_data = json.load(file)
 
