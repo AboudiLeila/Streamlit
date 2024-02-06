@@ -4,8 +4,11 @@ import webbrowser
 import threading
 import time
 
+alarm_time = None
 
 def set_alarm():
+    global alarm_time
+    
     try:
         hour_val = int(hour)
         minute_val = int(minute)
@@ -16,14 +19,16 @@ def set_alarm():
         st.error("Please enter valid hour and minute")
         return
 
-    threading.Thread(target=wait_and_ring_alarm, args=(alarm_time,)).start()
+    threading.Thread(target=wait_and_ring_alarm).start()
     st.success(f"Alarm set for {alarm_time.strftime('%I:%M %p')}")
 
 
-def wait_and_ring_alarm(alarm_time):
+def wait_and_ring_alarm():
+    global alarm_time
+    
     while True:
         current_time = datetime.datetime.now().time()
-        if current_time >= alarm_time:
+        if current_time.hour == alarm_time.hour and current_time.minute == alarm_time.minute:
             ring_alarm()
             break
         time.sleep(1)
